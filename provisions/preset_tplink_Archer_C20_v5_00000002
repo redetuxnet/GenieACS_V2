@@ -1,4 +1,4 @@
-//#Precondition: DeviceID.Manufacturer = "TP-Link" AND InternetGatewayDevice.DeviceInfo.HardwareVersion = "Archer C20 v5 00000002" OR InternetGatewayDevice.DeviceInfo.HardwareVersion = "Archer C20 v5 00000005" AND InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Username = "tr069"
+//#Precondition: DeviceID.Manufacturer = "TP-Link" AND InternetGatewayDevice.DeviceInfo.HardwareVersion = "Archer C20 v5 00000002" AND InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Username = "tr069"
 const hourly = Date.now(120000);
 const now = Date.now();
 clear("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Password", now);
