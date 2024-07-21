@@ -22,12 +22,15 @@ Além disso todos as CPE precisa obrigatóriamente conter o MAC LAN do roteador 
 Caso de reset, o roteador deve está vinculado ao cliente, em Equipamentos do cliente com o status "Remessa" ou "Comodato".
 </br>
 
-### Instalação do GenieACS (Créditos https://blog.remontti.com.br/6001)
+#
+
+### Instalação do GenieACS
 Requisitos:
 - Debian 11 - Baixe a ISO DVD completo, pois os espelhos não estão ficando disponiveis. (https://cdimage.debian.org/cdimage/archive/11.10.0/amd64/iso-dvd/debian-11.10.0-amd64-DVD-1.iso)
 - Não utilizar CGNAT entre o servidor e o roteador/ont.
 </br>
 - Execute todos os comandos em modo root no servidor.
+
 #### 1º Adicione contrib non-free aos repositórios
 *Voçê pode optar por comentar as linhas atuais com # na frente de cada linha e colocar o código abaixo:
 
@@ -43,13 +46,14 @@ acesse o sources.list com o nano</br> nano /etc/apt/sources.list
     deb http://deb.debian.org/debian/ bullseye-updates main contrib non-free
     deb-src http://deb.debian.org/debian/ bullseye-updates main contrib non-free
 
+#
 #### 2º Atualize os repositórios e atualize os pacotes
     # apt update && apt upgrade -y
-
+#
 #### 3º Instale os firmware-linux* e reinicie o servidor logo após a instalação
     # apt install firmware-linux firmware-linux-free firmware-linux-nonfree -y
     # systemctl reboot
-
+#
 #### 4º Instalação do nodejs
 Execute os comandos abaixo, linha por linha.
 
@@ -61,7 +65,7 @@ Verifique se existe alguma atualização do nodejs, se houver execute o 2 segund
     
     # npm search -g npm
     # npm install -g npm@10.8.2
-
+#
 #### 5º Instalação MongoDB
 Utilizaremos a versão 4.4 do MongoDB, nos meus teste é a unica que roda na primeira tentativa e sem falhas.</br>
 Se estiver com IPv6 ativo no servidor desative, houve falha no comando wget com o IPv6 ativado no servidor.
@@ -77,7 +81,7 @@ Ative o mongoDB
     # systemctl enable mongod
     # systemctl start mongod
     # systemctl status mongod
-
+#
 #### 6º Instalando o GenieACS
 Execute cada linha individualmente, não copie e cole tudo de uma vez (Válido para todos os comandos nesse tutorial).
 
@@ -197,7 +201,7 @@ nano /etc/logrotate.d/genieacs
     # systemctl enable genieacs-cwmp genieacs-nbi genieacs-fs genieacs-ui
     # systemctl start genieacs-cwmp genieacs-nbi genieacs-fs genieacs-ui
     # systemctl status genieacs-cwmp genieacs-nbi genieacs-fs genieacs-ui --no-pager
-
+#
 #### 7º Instalando o modulo de integração
 Instalando o github
     
@@ -213,7 +217,7 @@ Precisamos instalar duas dependências para o script de integração funcionar. 
     npm install fs
     cd /opt/genieacs/ext/api
     npm install request
-    
+#    
 #### 8º Acessando a interface Web do GenieACS
 Para seu primeiro acesso, acesse o ip do servidor com a porta 3000.</br>
 IMPORTANTE: Na instalação não configuramos o SSL, logo a url não suporta https, use apenas o http para o acesso via web
@@ -222,7 +226,7 @@ IMPORTANTE: Na instalação não configuramos o SSL, logo a url não suporta htt
     
 Após acessar, clique no botão "ABRACADABRA" e depois no botão "Open Sesame".</br>
 Depois disso, será redirecionado para a página de login, onde o usuário e senha é admin.
-
+#
 #### 9º Criando Virtual Parameters
 Nesse momento iremos criar 4 virtuais parametros que irá auxiliar nos scritps e na integração com o Hubsoft. </br>
 Os scripts dos Virutal Parametros estão localizado em /opt/genieacs/ext/virtual_parameters ou no git <https://github.com/redetuxnet/GenieACS_V2/virtual_parameters></br>
@@ -249,7 +253,7 @@ O quarto Virtual Parametro que iremos criar é o ppp_username
 3. Copie o script dentro do arquivo ppp_username no diretório informado acima e cole dentro do campo Script no GenieACS
 
 E continue criandos todos os demais Virtual Parametros que estão dentro da Pasta Virtual_parameters
-
+#
 #### 10º Criando os arquivos de provisionamento e presets.
 Antes de adicionarmos os provisionamento para cada modelo que será utilizado, precisamos editar dois provisionamentos que já estão criados, são os: defaults e inform.</br>
 
@@ -287,6 +291,8 @@ Clique em new e prencha os dados conforme abaixo
         Precondition: Copie a primeira linha de dentro do arquivo de provisionamento escolhido.
         Provision: nome_do_arquivo_do_provisionamento
         
+**No precondition, que será copiado do arquivo do provisionamento, contém o usuário padrão tr069 para validar se o roteador já está configurado ou não, pode ser alterado para o pppoe que será utilizado no preset do roteador.** </br>
+
 **IMPORTANTE**: Dentro dos scripts existem os parametros que serão usados para setar as informações no roteador. um exemplo é o usuário de conexão pppoe, nesses paramentros existem instâncias dos objetos. no momento que você cria o preset de firmware a instância do objeto que envia os dados do usuário de pppoe, pode está diferente do script de provisionamento.
     
     Exemplo de paramentro:
@@ -299,7 +305,31 @@ Para verificar o parametro correto, atualize toda a árvore de parametros, basta
     Parametro para consulta: InternetGatewayDevice
     
 após isso consulte o ultimo valor do parametro, exemplo: consulte a palavra "Username" no campo de busca dos parametros dentro das configurações do roteador no GenieACS e compare com o parametro que está no script.
-    
+#
+#### 11º Protegendo a conexão entre o roteador e o servidor
+
+Para assegurar uma comunicação segura, precisamos criar uma senha de conexão do roteador para servidor e virse-versa</br>
+
+para proteger a conexão do roteador para o servidor, acesse o menu admin -> config clique em new config </br>
+
+    Em key adicione:
+    cwmp.auth
+    Em Value adcione:
+    AUTH("usuario", "senha")
+
+_Adicione em AUTH o usuário e a senha que definiu no roteador para a conexão com ACS_
+
+
+para proteger a conexão do servidor para o roteador, acesse o menu admin -> config clique em new config </br>
+
+    Em key adicione:
+    cwmp.connectionRequestAuth
+    Em Value adcione:
+    AUTH("usuario", "senha")
+
+_Adicione em AUTH o usuário e a senha que definiu no roteador para a conexão de requisição originida do servidor._
+
+
 ## Configuração GenieACS no Hubsoft
 Dentro da wiki do hubsoft se encontra o precedimento para adicionar a integração do lado do ERP com o GenieACS e como definir os parametros customizados para cada tipo de roteador.</br>
 Documentação para integração:
@@ -311,6 +341,7 @@ Documentação parâmetro customizado para a LAN: </br>
 https://wiki.hubsoft.com.br/pt-br/atualizacoes/versao_1_106#h-6-personalizar-par%C3%A2metros-de-coleta-de-dados-lan-cpe
 
 **IMPORTANTE**: A API do GenieACS não possui token e nem autenticação para acesso, logo não deixe a porta 7557 exposta para a internet, coloque o firewall liberando o acesso apenas para o IP do seu Hubsoft.
+
 
 ## Nome e Senha do WiFi
 Nessa atualização foi desenvolvida a opção de leitura do nome e senha para o Wi-Fi, isso permite que o nome e senha do wifi, possa ser inserida sem acessar as configurações do roteador/ont.</br>
@@ -331,7 +362,8 @@ A senha padrão para o Wi-Fi em caso que não seja encontrado no sistema, será 
 
 **IMPORTANTE**: Caso o cliente altere a senha do Wi-Fi via aplicativo ou mesmo direto no equipamento, não será atualizado na documentação de senhas logo se houver o reset retornará a ultima senha registrada, caso queira que a informações seja alterada na documentação de senha deve ser atualizado manualmente no sistema.
 
-## Preset
+
+## Preset de firmware
 Todos os roteadores que for ser utilizado é recomendo o uso do preset (firmware customizado), para adicionar o valores padrões.</br> cada fabricante tem um modo de subir o preset consulte seu fornecedor. </br>
 lembre-se que no preset é necessário apenas os
 - Usuario padrão "tr069" e a senha do pppoe.
@@ -349,7 +381,13 @@ Dados do tr069 para ser prenchidos
 - Porta: 7547
 </br>
 Lembrando que não pode possuir NAT e nem CGNAT entre o servidor e os roteadores.
-
+#
+### Referências
+- https://blog.remontti.com.br/6001
+- https://docs.hubsoft.com.br/
+- https://wiki.hubsoft.com.br/pt-br/home
+- https://genieacs.com/docs/
+- https://docs.genieacs.com/en/latest/
 
 ## Contatos e Suporte
 - E-mail: jeffsonvitor69@gmail.com
