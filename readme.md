@@ -381,6 +381,7 @@ Dados do tr069 para ser prenchidos
 - Porta: 7547
 </br>
 Lembrando que não pode possuir NAT e nem CGNAT entre o servidor e os roteadores.
+
 #
 ### Referências
 - https://blog.remontti.com.br/6001
