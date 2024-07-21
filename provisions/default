@@ -1,0 +1,39 @@
+const hourly = Date.now(120000);
+const now = Date.now();
+
+// Refresh basic parameters hourly
+declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.DeviceInfo.SoftwareVersion", { path: hourly, value: hourly });
+declare("VirtualParameters.Ip", { path: hourly, value: hourly });
+declare("VirtualParameters.MAC", { path: hourly, value: hourly });
+declare("VirtualParameters.MACAddress", { path: hourly, value: hourly });
+declare("VirtualParameters.wifi_5g_igd", { path: hourly, value: hourly });
+declare("VirtualParameters.pass_wifi_5g_igd", { path: hourly, value: hourly });
+declare("VirtualParameters.ppp_username", { path: hourly, value: hourly });
+declare("VirtualParameters.pppoe_tr098", { path: hourly, value: hourly });
+declare("VirtualParameters.pppoe_tr181", { path: hourly, value: hourly });
+declare("VirtualParameters.ipv6", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.LANDevice.*.WLANConfiguration.*.SSID", { path: hourly, value: hourly });
+// Don't refresh password field periodically because CPEs always report blank passowrds for security reasons
+declare("InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANPPPConnection.*.Username", { path: hourly, value: hourly });
+declare("Device.PPP.Interface.*.Username", { path: hourly, value: hourly });
+declare("VirtualParameters.TotalAssociations_5G", { path: hourly, value: hourly});
+declare("VirtualParameters.Versao", { path: hourly, value: hourly});
+declare("InternetGatewayDevice.LANDevice.*.Hosts.Host.*.MACAddress", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.LANDevice.*.Hosts.Host.*.HostName", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.LANDevice.*.Hosts.Host.*.IPAddress", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.LANDevice.1.Hosts.Host.*.Active", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.WANDevice.*.WANConnectionDevice.*.WANPPPConnection.*.X_TP_IPv6AddressingType", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.LANDevice.*.WLANConfiguration.*.AssociatedDevice.*.AssociatedDeviceRssi", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.LANDevice.*.WLANConfiguration.*.AssociatedDevice.*.AssociatedDeviceMACAddress", { path: hourly, value: hourly });
+declare("InternetGatewayDevice.LANDevice.*.WLANConfiguration.*.AssociatedDevice", { path: hourly, value: hourly });
+
+	
+	
+
+
+
+
+	
+
+

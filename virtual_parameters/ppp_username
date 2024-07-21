@@ -1,0 +1,38 @@
+let m = "null";
+let ppp = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Username", {value: Date.now()}); 
+let ppp2 = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.2.Username", {value: Date.now()});
+
+if (ppp.size) { 
+ 
+  for (let p of ppp) { 
+ 
+    if (p.value[0]) { 
+ 
+      m = p.value[0]; 
+ 
+      break; 
+ 
+    } 
+ 
+  }   
+ 
+} else if (ppp2.size) { 
+ 
+  for (let p of ppp2) { 
+ 
+    if (p.value[0]) { 
+ 
+      m = p.value[0]; 
+ 
+      break; 
+ 
+    } 
+ 
+  }   
+ 
+} 
+
+return {writable: false, value: [m, "xsd:string"]};
+
+
+ 

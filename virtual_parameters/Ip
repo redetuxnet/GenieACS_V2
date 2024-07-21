@@ -1,0 +1,35 @@
+let m = "0.0.0.0";
+let ip = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.ExternalIPAddress", {value: Date.now()}); 
+let ip2 = declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.2.ExternalIPAddress", {value: Date.now()});
+
+if (ip.size) { 
+ 
+  for (let p of ip) { 
+ 
+    if (p.value[0]) { 
+ 
+      m = p.value[0]; 
+ 
+      break; 
+ 
+    } 
+ 
+  }   
+ 
+} else if (ip2.size) { 
+ 
+  for (let p of ip2) { 
+ 
+    if (p.value[0]) { 
+ 
+      m = p.value[0]; 
+ 
+      break; 
+ 
+    } 
+ 
+  }   
+ 
+} 
+
+return {writable: false, value: [m, "xsd:string"]};

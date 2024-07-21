@@ -1,0 +1,28 @@
+// Device ID as user name
+const username = declare("DeviceID.ID", {value: 1}).value[0]
+
+// Password will be fixed for a given device because Math.random() is seeded with device ID by default.
+const password = Math.trunc(Math.random() * Number.MAX_SAFE_INTEGER).toString(36);
+
+const informInterval = 2500;
+
+// Refresh values daily
+const daily = Date.now(86400000);
+
+// Unique inform offset per device for better load distribution
+const informTime = daily % 86400000;
+//let versao = declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", { value: 1 }).value[0];
+//declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.4.WANPPPConnection.1.X_TP_IPv6Enabled", { value: 1 }, { value: false });
+//declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.5.WANPPPConnection.1.X_TP_IPv6Enabled", { value: 1 }, { value: false });
+//declare("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.X_TP_IPv6Enabled", { value: 1 }, { value: false });
+//declare("InternetGatewayDevice.ManagementServer.PeriodicInformInterval", {value: daily}, {value: informInterval});
+let fabricante = declare("DeviceID.Manufacturer", { value: 1 }).value[0];
+if (fabricante == 'ZTE') {
+    let versao = declare("DeviceID.ProductClass", { value: 1 }).value[0];
+    if(versao == 'ZXHN H199A'){
+     declare("InternetGatewayDevice.ManagementServer.ConnectionRequestPassword", { value: 1 }, { value: 'ACS' });
+     declare("InternetGatewayDevice.ManagementServer.PeriodicInformInterval", { value: 1 }, { value: 300 });
+    }
+}
+
+

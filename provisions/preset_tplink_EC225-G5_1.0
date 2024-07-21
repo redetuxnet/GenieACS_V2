@@ -1,0 +1,29 @@
+//#Precondition: DeviceID.Manufacturer = "TP-Link" AND Device.DeviceInfo.HardwareVersion = "EC225-G5 1.0" AND Device.PPP.Interface.1.Username = "tr069"
+const hourly = Date.now(120000);
+const now = Date.now();
+clear("Device.WiFi.SSID.1.SSID", now);
+clear("Device.WiFi.SSID.3.SSID", now);
+clear("Device.WiFi.AccessPoint.1.Security.KeyPassphrase", now);
+clear("Device.WiFi.AccessPoint.3.Security.KeyPassphrase", now);
+clear("Device.PPP.Interface.1.Username", now);
+clear("Device.PPP.Interface.1.Password", now);
+let para_ssid24 = "Device.WiFi.SSID.1.SSID";
+let para_ssid5 = "Device.WiFi.SSID.3.SSID";
+let para_key24 = "Device.WiFi.AccessPoint.1.Security.KeyPassphrase";
+let para_key5 = "Device.WiFi.AccessPoint.3.Security.KeyPassphrase";
+let para_ppp_user = "Device.PPP.Interface.1.Username";
+let para_ppp_pass = "Device.PPP.Interface.1.Password";
+let maclan = declare("Device.Ethernet.Link.1.MACAddress", { value: 1 }).value[0];
+config(para_ssid24,para_ssid5,para_key24,para_key5,para_ppp_user,para_ppp_pass,maclan)
+
+function config(para_ssid24,para_ssid5,para_key24,para_key5,para_ppp_user,para_ppp_pass,maclan){
+  		let resplan = ext("index.js", "getCliente", maclan.toUpperCase());
+        declare(para_ssid24, { value: 1 }, { value: resplan.nome_wifi });
+        declare(para_ssid5, { value: 1 }, { value: resplan.nome_wifi_5g });
+        declare(para_key24, { value: 1 }, { value: resplan.senha_wifi });
+        declare(para_key5, { value: 1 }, { value: resplan.senha_wifi });
+        commit()
+        declare(para_ppp_pass, { value: 1 }, { value: resplan.senha_pppoe });
+        declare(para_ppp_user, { value: 1 }, { value: resplan.login_pppoe });
+        commit()
+}

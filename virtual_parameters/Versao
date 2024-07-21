@@ -1,0 +1,41 @@
+let m = 0
+let versao = declare("InternetGatewayDevice.DeviceInfo.HardwareVersion", {value: Date.now()}); 
+let versao1 = declare("Device.DeviceInfo.HardwareVersion", {value: Date.now()}); 
+
+if (versao.size) { 
+ 
+  for (let p of versao) { 
+ 
+    if (p.value[0]) { 
+      
+ 	  let semespaco = 	p.value[0];
+      let versao = semespaco.toString().split(" ")
+      m = versao[0]; 
+ 		
+      break; 
+ 
+    } 
+ 
+  }   
+ 
+}
+else if (versao1.size) { 
+ 
+  for (let p of versao1) { 
+ 
+    if (p.value[0]) { 
+      
+ 	  let semespaco = 	p.value[0];
+      let versao = semespaco.toString().split(" ")
+      m = versao[0]; 
+ 		
+      break; 
+ 
+    } 
+ 
+  }   
+ 
+}
+
+
+return {writable: false, value: [m, "xsd:string"]};

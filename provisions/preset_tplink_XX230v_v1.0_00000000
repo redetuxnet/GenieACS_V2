@@ -1,0 +1,31 @@
+//#Precondition: DeviceID.Manufacturer = "TP-Link" AND InternetGatewayDevice.DeviceInfo.HardwareVersion = "XX230v v1.0 00000000" AND InternetGatewayDevice.WANDevice.3.WANConnectionDevice.8.WANPPPConnection.1.Username = "tr069"
+const hourly = Date.now(120000);
+const now = Date.now();
+clear("InternetGatewayDevice.WANDevice.3.WANConnectionDevice.8.WANPPPConnection.1.Password", now);
+clear("InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey", now);
+clear("InternetGatewayDevice.LANDevice.1.WLANConfiguration.3.X_TP_PreSharedKey", now)
+let para_ssid24 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID";
+let para_ssid5 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.3.SSID";
+let para_key24 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey";
+let para_key5 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.3.X_TP_PreSharedKey";
+let para_ppp_user = "InternetGatewayDevice.WANDevice.3.WANConnectionDevice.8.WANPPPConnection.1.Username";
+let para_ppp_pass = "InternetGatewayDevice.WANDevice.3.WANConnectionDevice.8.WANPPPConnection.1.Password";
+let maclan = declare("InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig.1.MACAddress", { value: 1 }).value[0];
+config(para_ssid24,para_ssid5,para_key24,para_key5,para_ppp_user,para_ppp_pass,maclan)
+
+function config(para_ssid24,para_ssid5,para_key24,para_key5,para_ppp_user,para_ppp_pass,maclan){
+  		let resplan = ext("index.js", "getCliente", maclan.toUpperCase());
+        declare(para_ssid24, { value: 1 }, { value: resplan.nome_wifi });
+        declare(para_ssid5, { value: 1 }, { value: resplan.nome_wifi_5g });
+        declare(para_key24, { value: 1 }, { value: resplan.senha_wifi });
+        declare(para_key5, { value: 1 }, { value: resplan.senha_wifi });
+        commit()
+      	declare("Tags." + resplan.login_pppoe, null, { value: true });
+        const daily = Date.now(86400000);
+        const informInterval = 1500;
+      	declare("InternetGatewayDevice.ManagementServer.PeriodicInformInterval", {value: daily}, {value: informInterval});
+        commit()
+        declare(para_ppp_pass, { value: 1 }, { value: resplan.senha_pppoe });
+        declare(para_ppp_user, { value: 1 }, { value: resplan.login_pppoe });
+        commit()
+}
