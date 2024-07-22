@@ -1,9 +1,8 @@
 //#Precondition: DeviceID.Manufacturer = "MERCUSYS" AND InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Username = "tr069"
 const hourly = Date.now(120000);
 const now = Date.now();
-clear("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.1.Password", now);
-clear("InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey", now);
-clear("InternetGatewayDevice.LANDevice.1.WLANConfiguration.3.X_TP_PreSharedKey", now)
+clear("Device", Date.now());
+clear("InternetGatewayDevice", Date.now());
 let para_ssid24 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID";
 let para_ssid5 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.3.SSID";
 let para_key24 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.X_TP_PreSharedKey";
@@ -17,6 +16,7 @@ function config(para_ssid24,para_ssid5,para_key24,para_key5,para_ppp_user,para_p
   		let resplan = ext("index.js", "getCliente", maclan.toUpperCase());
         declare(para_ssid24, { value: 1 }, { value: resplan.nome_wifi });
         declare(para_ssid5, { value: 1 }, { value: resplan.nome_wifi_5g });
+        commit()
         declare(para_key24, { value: 1 }, { value: resplan.senha_wifi });
         declare(para_key5, { value: 1 }, { value: resplan.senha_wifi });
         commit()

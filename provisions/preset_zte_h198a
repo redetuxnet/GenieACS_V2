@@ -1,10 +1,8 @@
 //#Precondition: DeviceID.Manufacturer = "ZTE" AND DeviceID.ProductClass = "ZXHN H198A V3.0" AND InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.2.Username = "tr069"
 const hourly = Date.now(120000);
 const now = Date.now();
-
-clear("InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANPPPConnection.2.Password", now);
-clear("InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.KeyPassphrase", now);
-clear("InternetGatewayDevice.LANDevice.1.WLANConfiguration.5.KeyPassphrase", now)
+clear("Device", Date.now());
+clear("InternetGatewayDevice", Date.now());
 let para_ssid24 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID";
 let para_ssid5 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.5.SSID";
 let para_key24 = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.KeyPassphrase";
@@ -16,17 +14,19 @@ config(para_ssid24,para_ssid5,para_key24,para_key5,para_ppp_user,para_ppp_pass,m
 
 function config(para_ssid24,para_ssid5,para_key24,para_key5,para_ppp_user,para_ppp_pass,maclan){
   		let resplan = ext("index.js", "getCliente", maclan.toUpperCase());
+        log (resplan.login_pppoe)
         declare(para_ssid24, { value: 1 }, { value: resplan.nome_wifi });
         declare(para_ssid5, { value: 1 }, { value: resplan.nome_wifi_5g });
+        commit()
         declare(para_key24, { value: 1 }, { value: resplan.senha_wifi });
         declare(para_key5, { value: 1 }, { value: resplan.senha_wifi });
         commit()
-      	declare("Tags." + resplan.login_pppoe, null, { value: true });
+  		declare("Tags." + resplan.login_pppoe, null, { value: true });
         const daily = Date.now(86400000);
         const informInterval = 1500;
       	declare("InternetGatewayDevice.ManagementServer.PeriodicInformInterval", {value: daily}, {value: informInterval});
         commit()
+  		declare(para_ppp_user, { value: 1 }, { value: resplan.login_pppoe });
         declare(para_ppp_pass, { value: 1 }, { value: resplan.senha_pppoe });
-        declare(para_ppp_user, { value: 1 }, { value: resplan.login_pppoe });
         commit()
 }

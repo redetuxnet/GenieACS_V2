@@ -59,7 +59,7 @@ async function cliente(args, callback){
                         senha_pppoe = cliente_servico[i].senha
                         senhas = cliente_servico[i].senhas
                         for(j=0; j<senhas.length; j++ ){
-                            if(senhas[j].descricao == "SENHA DO WIFI"){
+                            if(senhas[j].descricao == "REDE WIFI"){
                                 nome_wifi = senhas[j].usuario
                                 senha_wifi = senhas[j].senha
                                 break
@@ -99,7 +99,7 @@ async function cliente(args, callback){
                                 senha_pppoe = cliente_servico[i].senha
                                 senhas = cliente_servico[i].senhas
                                 for(j=0; j<senhas.length; j++ ){
-                                    if(senhas[j].descricao == "SENHA DO WIFI"){
+                                    if(senhas[j].descricao == "REDE WIFI"){
                                         nome_wifi = senhas[j].usuario
                                         senha_wifi = senhas[j].senha
                                         break
@@ -130,5 +130,6 @@ async function cliente(args, callback){
         callback(null,"Mac nao existe no sistema "+args[0])
     }
 }
+
 
 exports.getCliente = cliente;
