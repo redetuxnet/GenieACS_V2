@@ -20,7 +20,7 @@ exports.postLogin = function(url_base,username,password,client_secret,client_id)
 
         request(options, function (err, res, body) {
             if (err) {
-              reject(eer)
+              reject(err)
             }else{
               resolve(body)
             }
