@@ -104,6 +104,7 @@ nano /opt/genieacs/genieacs.env
     #GENIEACS_DEBUG_FILE=/var/log/genieacs/genieacs-debug.yaml
     NODE_OPTIONS=--enable-source-maps
     GENIEACS_EXT_DIR=/opt/genieacs/ext
+    GENIEACS_EXT_TIMEOUT=15000
     GENIEACS_UI_JWT_SECRET=secret
     HUBSOFT_URL=url_do_sistema
     HUBSOFT_USUARIO=email_usuario
@@ -354,7 +355,7 @@ Para a opção via provisionamento é necessário ativar duas configurações no
 Feito as ativações dentro do Hubsoft, só basta preecnher as informações no momento do provisionamento nas variáveis de nome do wifi e a senha.
 
 Para a opção via documentação de senhas, acesse a opção documentação de senhas do serviço do cliente, disponível tanto na versão web como no aplicativo do técnico.</br>
-Após acessar documentação de senhas, clique em adicionar "+" e preecha o campo descrição com "SENHA DO WIFI" sem aspas, no campo usuário digite o nome do WiFi e na senha digite a senha do WiFi.
+Após acessar documentação de senhas, clique em adicionar "+" e preecha o campo descrição com "REDE WIFI" sem aspas, no campo usuário digite o nome do WiFi e na senha digite a senha do WiFi.
 
 O nome padrão para o Wi-Fi em caso que não seja encontrado no sistema, será Utilizado PRIMEIRO_NOME_DO_CLIENTE + CODIGO_DO_CLIENTE (JEFFSON_5867).
 

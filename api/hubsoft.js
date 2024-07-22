@@ -20,12 +20,7 @@ exports.postLogin = function(url_base,username,password,client_secret,client_id)
 
         request(options, function (err, res, body) {
             if (err) {
-              var log_erro_array = {
-                sistema: "HUB",
-                erro: 'sem conexao com o sistema',
-                data: new Date(),
-              };
-              logger.error(log_erro_array);
+              reject(eer)
             }else{
               resolve(body)
             }
