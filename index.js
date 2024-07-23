@@ -41,8 +41,8 @@ async function cliente(args, callback){
     var responsepostlogin = await api.postLogin(url_base,usuario,password,client_secret,client_id)
     var responsegetMacAddress = await api.getMacAddress(responsepostlogin.access_token,url_base,args[0])
     if(responsegetMacAddress.produto.length>0){
-        var id_produto_item_status = responsegetMacAddress.produto[0].produto_item_status.id_produto_item_status
-        if(id_produto_item_status == 42 || id_produto_item_status == 6 ){
+        var prefixo = responsegetMacAddress.produto[0].produto_item_status.prefixo
+        if(prefixo == "remessa" || prefixo == "comodato" || prefixo == "vendido" || prefixo == "uso_e_consumo" ){
             var id_cliente_servico = responsegetMacAddress.produto[0].cliente_servico.id_cliente_servico
             var retornogetClienteServico = await api.getClienteServico(responsepostlogin.access_token,url_base,id_cliente_servico)
             var nome_razaosocial = retornogetClienteServico.clientes[0].nome_razaosocial
@@ -76,7 +76,7 @@ async function cliente(args, callback){
                         break
                 }
             }
-        }else if(id_produto_item_status == 13){
+        }else if(prefixo == "usuario"){
             var id_usuario = responsegetMacAddress.produto[0].usuario.id_usuario
             var responselistOrdemServico = await api.listOrdemServico(responsepostlogin.access_token,url_base,id_usuario)
             if(responselistOrdemServico.ordens_servico.length>0){
